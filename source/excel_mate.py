@@ -1,21 +1,17 @@
-import openpyxl
-import numpy
 import xlrd
-import xlwt
+import openpyxl
 
 excel_path = r'../file/TaskDetail2059373187.xlsx'
-
-
-def read_excel():
-    global excel_path
-    wb = xlrd.open_workbook(excel_path)
-    sheet = wb.sheet_names()
-    print(sheet)
+book_path = r'../file/估值_FD20170307-D28升级说明-相泽峰 .xlsx'
+Task_Number = 0
+Customer    = 0
+CustomID    = 0
+Type        = 0
 
 
 class _Tasks:
     def __init__(self):
-        self.Task = {'任务编号':'','需求提出方':'','需求编号':'','类型':'',}
+        self.Task = {'任务编号':'' , '需求提出方':'' , '需求编号':'' , '类型':''}
         self.Tasks = []
 
     def Append_Rwbh(self,data):
@@ -26,12 +22,82 @@ class _Tasks:
         self.Tasks.append(self.Task)
 
 
-def main():
-    data = ['1234','国泰君安','20183123','缺陷']
-    task_data = _Tasks()
-    task_data.Append_Rwbh(data)
-    print(task_data.Tasks)
+# https://www.cnblogs.com/linyfeng/p/7123423.html
+# 打开excel文件并获取所有sheet xlrd.open_workbook
+# 根据下标获取sheet名称 sheet2_name=workbook.sheet_names()[1]
+# 获取sheet名称、行数、列数 workbook.sheet_by_index(1) sheet2.name, sheet2.nrows, sheet2.ncols
+# 根据sheet名称获取整行和整列的值 sheet2.row_values(3)  sheet2.col_values(2)
+# 获取指定单元格的内容  sheet2.cell(1,0).value.encode('utf-8')   sheet2.cell_value(1,0).encode('utf-8')  print sheet2.row(1)[0].value.encode('utf-8')
+# 获取单元格内容的数据类型  sheet2.cell(1,0).ctype
 
+# 1、先读取第一行 查找以下字符串 并记录所在列数：
+#    Task_Number任务编号 Customer 需求提出方 CustomID 对应的需求点编号 Type类型
+# 2、根据数字 提取每一行的关键信息  添加到Tasks类里
+# 3、数据下发（待开发）
+
+
+def read_excel():
+    global excel_path
+    global Task_Number
+    global Customer
+    global CustomID
+    global Type
+    wb = xlrd.open_workbook(excel_path)
+    sheet_name = wb.sheet_names()[0]
+    sheet = wb.sheet_by_name(sheet_name)
+    rows = sheet.row_values(0)
+    i = 0
+    for row in rows:
+        if row.find('任务编号')>=0:
+            Task_Number = i
+        if row.find('需求提出方')>=0:
+            Customer = i
+        if row.find('对应的需求点编号')>=0:
+            CustomID = i
+        if row.find('类型')>=0:
+            Type = i
+        i += 1
+    Task_datas = _Tasks()
+    Bug_dates = _Tasks()
+    Task_info = []
+    for j in range(1,sheet.nrows-2):
+        Task_info.append(sheet.row_values(j)[Task_Number])
+        Task_info.append(sheet.row_values(j)[Customer])
+        Task_info.append(sheet.row_values(j)[CustomID])
+        Task_info.append(sheet.row_values(j)[Type])
+        if sheet.row_values(j)[Type].find('缺陷')>= 0:
+            Bug_dates.Append_Rwbh(Task_info)
+        else:
+            Task_datas.Append_Rwbh(Task_info)
+        Task_info.clear()
+
+    return Task_datas.Tasks, Bug_dates.Tasks
+
+
+def write_excel(bugs):
+    global book_path
+    wb = openpyxl.load_workbook(book_path)
+    ws = wb.worksheets[1]
+
+    a = 3
+    for bug in bugs:
+        ws.delete_rows(a)
+        ws.cell(row=a,column=0+1).value = '日常业务'
+        ws.cell(row=a,column=1+1).value = '批量做账'
+        ws.cell(row=a,column= 1+4).value = '修复版本'
+        ws.cell(row=a,column= 1+5).value = '否'
+        ws.cell(row=a,column= 1+6).value = '无'
+        ws.cell(row=a,column= 1+7).value = bug['需求提出方']
+        ws.cell(row=a,column= 1+8).value = bug['任务编号']
+        a += 1
+    wb.save(book_path)
+def main():
+    data=[]
+
+    data.append(read_excel()[0])
+    data.append(read_excel()[1])
+
+    write_excel(data[1])
 
 if __name__ == '__main__':
     main()
