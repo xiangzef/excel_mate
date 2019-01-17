@@ -109,10 +109,8 @@ def write_excel(bugs,tasks):
 
 def main():
     data=[]
-
     data.append(read_excel()[0])
     data.append(read_excel()[1])
-
     write_excel(data[1],data[0])
 
 if __name__ == '__main__':
