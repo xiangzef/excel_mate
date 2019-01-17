@@ -15,6 +15,8 @@ class _Tasks:
         self.Tasks = []
 
     def Append_Rwbh(self,data):
+        self.Task.clear()
+        self.Tasks.append(self.Task)
         self.Task['任务编号'] = data[0]
         self.Task['需求提出方'] = data[1]
         self.Task['需求编号'] = data[2]
