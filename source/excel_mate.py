@@ -15,13 +15,11 @@ class _Tasks:
         self.Tasks = []
 
     def Append_Rwbh(self,data):
-        self.Task.clear()
-        self.Tasks.append(self.Task)
         self.Task['任务编号'] = data[0]
         self.Task['需求提出方'] = data[1]
         self.Task['需求编号'] = data[2]
         self.Task['类型'] = data[3]
-        self.Tasks.append(self.Task)
+        self.Tasks.append(dict(self.Task))
 
 
 # https://www.cnblogs.com/linyfeng/p/7123423.html
@@ -76,30 +74,46 @@ def read_excel():
     return Task_datas.Tasks, Bug_dates.Tasks
 
 
-def write_excel(bugs):
+def write_excel(bugs,tasks):
     global book_path
     wb = openpyxl.load_workbook(book_path)
-    ws = wb.worksheets[1]
+    ws_bug = wb.worksheets[1]
 
     a = 3
     for bug in bugs:
-        ws.delete_rows(a)
-        ws.cell(row=a,column=0+1).value = '日常业务'
-        ws.cell(row=a,column=1+1).value = '批量做账'
-        ws.cell(row=a,column= 1+4).value = '修复版本'
-        ws.cell(row=a,column= 1+5).value = '否'
-        ws.cell(row=a,column= 1+6).value = '无'
-        ws.cell(row=a,column= 1+7).value = bug['需求提出方']
-        ws.cell(row=a,column= 1+8).value = bug['任务编号']
+        ws_bug.delete_rows(a)
+        ws_bug.cell(row=a,column=1).value = '日常业务'
+        ws_bug.cell(row=a,column=2).value = '批量做账'
+        ws_bug.cell(row=a,column=5).value = '修复版本'
+        ws_bug.cell(row=a,column= 6).value = '否'
+        ws_bug.cell(row=a,column= 7).value = '无'
+        ws_bug.cell(row=a,column= 8).value = bug['需求提出方']
+        ws_bug.cell(row=a,column= 9).value = bug['任务编号']
+        a += 1
+
+    ws_task = wb.worksheets[2]
+    a = 3
+    for task in tasks:
+        ws_task.delete_rows(a)
+        ws_task.cell(row=a,column= 1).value = '日常业务'
+        ws_task.cell(row=a,column= 2).value = '批量做账'
+        ws_task.cell(row=a,column= 5).value = '无'
+
+        ws_task.cell(row=a,column= 6).value = task['需求提出方']
+        ws_task.cell(row=a,column= 7).value = task['需求编号']
         a += 1
     wb.save(book_path)
+
+
+
+
 def main():
     data=[]
 
     data.append(read_excel()[0])
     data.append(read_excel()[1])
 
-    write_excel(data[1])
+    write_excel(data[1],data[0])
 
 if __name__ == '__main__':
     main()
