@@ -1,14 +1,40 @@
-import xlrd
-import openpyxl
+import xlrd,openpyxl,sys,os,time
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
 from openpyxl.styles.colors import BLACK
 
-excel_path = r'../file/TaskDetail2059373187.xlsx'
-book_path = r'../file/估值_FD20170307-D28升级说明-相泽峰 .xlsx'
+strDes='''
+====================================================================
+		HUNDSUN Valuation System SOP Tools Build(90109) 
+		1.智能脚本填充工具 - Smart BOOKMARK UPgrade
+		2.版本信息创建 - Valuation System Version Create
+		      Python By 3.7.1                   by Spake
+====================================================================
+	'''
+
+
+strLocalFolder = ''#本地目录
+excel_path = ''#源文件目录
+book_path = ''#生成目标文件目录
 Task_Number = 0
 Customer    = 0
 CustomID    = 0
 Type        = 0
+VersionID   = ''#版本号
+
+def _init():
+
+    global strLocalFolder
+    global excel_path
+    global book_path
+    # 获取目录
+    strLocalFolder = os.getcwd()#D:\git\excel_mate\file\估值_FD20170307-D28升级说明-相泽峰 .xlsx
+    book_path = strLocalFolder + r'\估值_FD20170307-D28升级说明-相泽峰 .xlsx'
+    for root, dirs, files in os.walk(strLocalFolder):
+        for file in files:
+            if file.find('TaskDetail')>=0:
+                excel_path = strLocalFolder +r'/'+file
+
+
 
 
 class _Tasks:
@@ -78,7 +104,11 @@ def read_excel():
 
 def write_excel(bugs,tasks):
     global book_path
+    global strLocalFolder
     wb = openpyxl.load_workbook(book_path)
+    wb.worksheets[0].cell(row = 1 ,column= 1).value = VersionID + '（注意事项）'
+
+
     ws_bug = wb.worksheets[1]
 
     # 复制单元格格式
@@ -101,6 +131,8 @@ def write_excel(bugs,tasks):
     Alignment_2 = Alignment(horizontal='center', vertical='center', textRotation=0, wrapText=True, shrinkToFit=None, indent=0.0, relativeIndent=0.0, justifyLastLine=None, readingOrder=0.0)
     # print('缩进样式')
     # print(Alignment_1)
+
+
     a = 3
     for bug in bugs:
         ws_bug.delete_rows(a)
@@ -114,7 +146,7 @@ def write_excel(bugs,tasks):
         ws_bug.cell(row=a, column=2).alignment = Alignment_2
         ws_bug.cell(row=a, column=2).border = Border_1
 
-        ws_bug.cell(row=a, column=5).value = '修复版本'
+        ws_bug.cell(row=a, column=5).value = VersionID
         ws_bug.cell(row=a, column=5).font = font_1
         ws_bug.cell(row=a, column=5).alignment = Alignment_2
         ws_bug.cell(row=a, column=5).border = Border_1
@@ -171,12 +203,17 @@ def write_excel(bugs,tasks):
         ws_task.cell(row=a, column= 7).border = Border_1
 
         a += 1
+    book_path = strLocalFolder + r'\估值_'+VersionID+r'升级说明-相泽峰 .xlsx'
     wb.save(book_path)
 
 
 
 
 def main():
+    global VersionID
+    print(strDes)
+    VersionID = input('请输入版本号：')
+    _init()
     data=[]
     data.append(read_excel()[0])
     data.append(read_excel()[1])
