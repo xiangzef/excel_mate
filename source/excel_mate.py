@@ -4,7 +4,6 @@ from openpyxl.styles.colors import BLACK
 
 strDes='''
 ====================================================================
-		HUNDSUN Valuation System SOP Tools Build(90109) 
 		1.智能脚本填充工具 - Smart BOOKMARK UPgrade
 		2.版本信息创建 - Valuation System Version Create
 		      Python By 3.7.1                   by Spake
