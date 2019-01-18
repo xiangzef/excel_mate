@@ -187,6 +187,11 @@ def write_excel(bugs,tasks):
         ws_task.cell(row=a, column= 2).alignment = Alignment_2
         ws_task.cell(row=a, column= 2).border = Border_1
 
+        ws_task.cell(row=a,column= 4).value = '否'
+        ws_task.cell(row=a, column= 4).font = font_1
+        ws_task.cell(row=a, column= 4).alignment = Alignment_2
+        ws_task.cell(row=a, column= 4).border = Border_1
+
         ws_task.cell(row=a,column= 5).value = '无'
         ws_task.cell(row=a, column= 5).font = font_1
         ws_task.cell(row=a, column= 5).alignment = Alignment_2
