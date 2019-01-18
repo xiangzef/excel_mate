@@ -1,5 +1,7 @@
 import xlrd
 import openpyxl
+from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
+from openpyxl.styles.colors import BLACK
 
 excel_path = r'../file/TaskDetail2059373187.xlsx'
 book_path = r'../file/估值_FD20170307-D28升级说明-相泽峰 .xlsx'
@@ -79,28 +81,95 @@ def write_excel(bugs,tasks):
     wb = openpyxl.load_workbook(book_path)
     ws_bug = wb.worksheets[1]
 
+    # 复制单元格格式
+    font_1 = Font(name='宋体', charset=134, family=None, b=False, i=False, strike=None, outline=None, shadow=None, condense=None, color=None, extend=None, sz=10.0, u=None, vertAlign=None, scheme=None)
+    Border_1 = Border(outline=True, diagonalUp=False, diagonalDown=False, start=None, end=None,
+                    left=Side(style='thin', color = BLACK),
+                    right=Side(style='thin', color = BLACK),
+                    top=Side(style='thin', color = BLACK),
+                    bottom=Side(style='thin', color = BLACK),
+                    diagonal=Side(style=None, color=None),
+                    diagonal_direction=0,
+               )
+    # Border_1 = ws_bug.cell(row=4, column=2).border
+    # print('边框样式')
+    # print(Border_1)
+
+    # 靠右缩进
+    Alignment_1 = Alignment(horizontal=None, vertical=None, textRotation=0, wrapText=None, shrinkToFit=None, indent=0.0, relativeIndent=0.0, justifyLastLine=None, readingOrder=0.0)
+    # 居中缩进
+    Alignment_2 = Alignment(horizontal='center', vertical='center', textRotation=0, wrapText=True, shrinkToFit=None, indent=0.0, relativeIndent=0.0, justifyLastLine=None, readingOrder=0.0)
+    # print('缩进样式')
+    # print(Alignment_1)
     a = 3
     for bug in bugs:
         ws_bug.delete_rows(a)
-        ws_bug.cell(row=a,column=1).value = '日常业务'
-        ws_bug.cell(row=a,column=2).value = '批量做账'
-        ws_bug.cell(row=a,column=5).value = '修复版本'
-        ws_bug.cell(row=a,column= 6).value = '否'
-        ws_bug.cell(row=a,column= 7).value = '无'
-        ws_bug.cell(row=a,column= 8).value = bug['需求提出方']
-        ws_bug.cell(row=a,column= 9).value = bug['任务编号']
+        ws_bug.cell(row=a, column=1).value = '日常业务'
+        ws_bug.cell(row=a, column=1).font = font_1
+        ws_bug.cell(row=a, column=1).alignment = Alignment_2
+        ws_bug.cell(row=a, column=1).border = Border_1
+
+        ws_bug.cell(row=a, column=2).value = '批量做账'
+        ws_bug.cell(row=a, column=2).font = font_1
+        ws_bug.cell(row=a, column=2).alignment = Alignment_2
+        ws_bug.cell(row=a, column=2).border = Border_1
+
+        ws_bug.cell(row=a, column=5).value = '修复版本'
+        ws_bug.cell(row=a, column=5).font = font_1
+        ws_bug.cell(row=a, column=5).alignment = Alignment_2
+        ws_bug.cell(row=a, column=5).border = Border_1
+
+        ws_bug.cell(row=a, column=6).value = '否'
+        ws_bug.cell(row=a, column=6).font = font_1
+        ws_bug.cell(row=a, column=6).alignment = Alignment_2
+        ws_bug.cell(row=a, column=6).border = Border_1
+
+        ws_bug.cell(row=a, column=7).value = '无'
+        ws_bug.cell(row=a, column=7).font = font_1
+        ws_bug.cell(row=a, column=7).alignment = Alignment_2
+        ws_bug.cell(row=a, column=7).border = Border_1
+
+        ws_bug.cell(row=a, column=8).value = bug['需求提出方']
+        ws_bug.cell(row=a, column=8).font = font_1
+        ws_bug.cell(row=a, column=8).alignment = Alignment_2
+        ws_bug.cell(row=a, column=8).border = Border_1
+
+        ws_bug.cell(row=a, column=9).value = bug['任务编号']
+        ws_bug.cell(row=a, column=9).font = font_1
+        ws_bug.cell(row=a, column=9).alignment = Alignment_2
+        ws_bug.cell(row=a, column=9).border = Border_1
         a += 1
 
     ws_task = wb.worksheets[2]
     a = 3
     for task in tasks:
         ws_task.delete_rows(a)
+
         ws_task.cell(row=a,column= 1).value = '日常业务'
+        ws_task.cell(row=a, column= 1).font = font_1
+        ws_task.cell(row=a, column= 1).alignment = Alignment_2
+        ws_task.cell(row=a, column= 1).border = Border_1
+
         ws_task.cell(row=a,column= 2).value = '批量做账'
+        ws_task.cell(row=a, column= 2).font = font_1
+        ws_task.cell(row=a, column= 2).alignment = Alignment_2
+        ws_task.cell(row=a, column= 2).border = Border_1
+
         ws_task.cell(row=a,column= 5).value = '无'
+        ws_task.cell(row=a, column= 5).font = font_1
+        ws_task.cell(row=a, column= 5).alignment = Alignment_2
+        ws_task.cell(row=a, column= 5).border = Border_1
 
         ws_task.cell(row=a,column= 6).value = task['需求提出方']
+        ws_task.cell(row=a, column= 6).font = font_1
+        ws_task.cell(row=a, column= 6).alignment = Alignment_2
+        ws_task.cell(row=a, column= 6).border = Border_1
+
         ws_task.cell(row=a,column= 7).value = task['需求编号']
+        ws_task.cell(row=a, column= 7).font = font_1
+        ws_task.cell(row=a, column= 7).alignment = Alignment_2
+        ws_task.cell(row=a, column= 7).border = Border_1
+
         a += 1
     wb.save(book_path)
 
