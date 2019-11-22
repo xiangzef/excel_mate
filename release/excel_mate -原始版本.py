@@ -1,5 +1,5 @@
 import xlrd,openpyxl,sys,os,time
-from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font,numbers
+from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
 from openpyxl.styles.colors import BLACK
 
 strDes='''
@@ -145,11 +145,6 @@ def write_excel(bugs,tasks):
         ws_bug.cell(row=a, column=2).alignment = Alignment_2
         ws_bug.cell(row=a, column=2).border = Border_1
 
-        ws_bug.cell(row=a, column=4).value = '严重'
-        ws_bug.cell(row=a, column=4).font = font_1
-        ws_bug.cell(row=a, column=4).alignment = Alignment_2
-        ws_bug.cell(row=a, column=4).border = Border_1
-
         ws_bug.cell(row=a, column=5).value = VersionID
         ws_bug.cell(row=a, column=5).font = font_1
         ws_bug.cell(row=a, column=5).alignment = Alignment_2
@@ -165,12 +160,15 @@ def write_excel(bugs,tasks):
         ws_bug.cell(row=a, column=7).alignment = Alignment_2
         ws_bug.cell(row=a, column=7).border = Border_1
 
-        ws_bug.cell(row=a, column=8).value = bug['需求编号']
+        ws_bug.cell(row=a, column=8).value = bug['需求提出方']
         ws_bug.cell(row=a, column=8).font = font_1
         ws_bug.cell(row=a, column=8).alignment = Alignment_2
         ws_bug.cell(row=a, column=8).border = Border_1
-        ws_bug.cell(row=a, column=8).number_format = '0'
- 
+
+        ws_bug.cell(row=a, column=9).value = bug['任务编号']
+        ws_bug.cell(row=a, column=9).font = font_1
+        ws_bug.cell(row=a, column=9).alignment = Alignment_2
+        ws_bug.cell(row=a, column=9).border = Border_1
         a += 1
 
     ws_task = wb.worksheets[2]
@@ -198,12 +196,15 @@ def write_excel(bugs,tasks):
         ws_task.cell(row=a, column= 5).alignment = Alignment_2
         ws_task.cell(row=a, column= 5).border = Border_1
 
-        ws_task.cell(row=a,column= 6).value = task['需求编号']
+        ws_task.cell(row=a,column= 6).value = task['需求提出方']
         ws_task.cell(row=a, column= 6).font = font_1
         ws_task.cell(row=a, column= 6).alignment = Alignment_2
         ws_task.cell(row=a, column= 6).border = Border_1
-        ws_task.cell(row=a, column=8).number_format = 'Text'
- 
+
+        ws_task.cell(row=a,column= 7).value = task['需求编号']
+        ws_task.cell(row=a, column= 7).font = font_1
+        ws_task.cell(row=a, column= 7).alignment = Alignment_2
+        ws_task.cell(row=a, column= 7).border = Border_1
 
         a += 1
     book_path = strLocalFolder + r'\估值_'+VersionID+r'升级说明-相泽峰 .xlsx'

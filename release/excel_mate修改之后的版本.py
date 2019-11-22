@@ -1,5 +1,5 @@
 import xlrd,openpyxl,sys,os,time
-from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font,numbers
+from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
 from openpyxl.styles.colors import BLACK
 
 strDes='''
@@ -145,10 +145,10 @@ def write_excel(bugs,tasks):
         ws_bug.cell(row=a, column=2).alignment = Alignment_2
         ws_bug.cell(row=a, column=2).border = Border_1
 
-        ws_bug.cell(row=a, column=4).value = '严重'
-        ws_bug.cell(row=a, column=4).font = font_1
-        ws_bug.cell(row=a, column=4).alignment = Alignment_2
-        ws_bug.cell(row=a, column=4).border = Border_1
+        ws_bug.cell(row=a, column=2).value = '严重'
+        ws_bug.cell(row=a, column=2).font = font_1
+        ws_bug.cell(row=a, column=2).alignment = Alignment_2
+        ws_bug.cell(row=a, column=2).border = Border_1
 
         ws_bug.cell(row=a, column=5).value = VersionID
         ws_bug.cell(row=a, column=5).font = font_1
@@ -169,7 +169,6 @@ def write_excel(bugs,tasks):
         ws_bug.cell(row=a, column=8).font = font_1
         ws_bug.cell(row=a, column=8).alignment = Alignment_2
         ws_bug.cell(row=a, column=8).border = Border_1
-        ws_bug.cell(row=a, column=8).number_format = '0'
  
         a += 1
 
@@ -202,7 +201,6 @@ def write_excel(bugs,tasks):
         ws_task.cell(row=a, column= 6).font = font_1
         ws_task.cell(row=a, column= 6).alignment = Alignment_2
         ws_task.cell(row=a, column= 6).border = Border_1
-        ws_task.cell(row=a, column=8).number_format = 'Text'
  
 
         a += 1
