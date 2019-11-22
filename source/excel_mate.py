@@ -169,7 +169,7 @@ def write_excel(bugs,tasks):
         ws_bug.cell(row=a, column=8).font = font_1
         ws_bug.cell(row=a, column=8).alignment = Alignment_2
         ws_bug.cell(row=a, column=8).border = Border_1
-        ws_bug.cell(row=a, column=8).number_format = '0'
+        ws_bug.cell(row=a, column=8).number_format = '@'
  
         a += 1
 
@@ -202,7 +202,7 @@ def write_excel(bugs,tasks):
         ws_task.cell(row=a, column= 6).font = font_1
         ws_task.cell(row=a, column= 6).alignment = Alignment_2
         ws_task.cell(row=a, column= 6).border = Border_1
-        ws_task.cell(row=a, column=8).number_format = 'Text'
+        ws_task.cell(row=a, column=6).number_format = '@'
  
 
         a += 1
